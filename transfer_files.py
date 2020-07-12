@@ -3,8 +3,10 @@
 import os
 import sys
 import glob
+import time
 import shutil
 import datetime
+
 
 # this is the mountpoint where memory card will be mounted
 cfolder = "/run/media/bjoern/EOS_DIGITAL/DCIM/100EOS5D"
@@ -24,6 +26,14 @@ except IndexError:
     print(f"{sys.argv[0]} <foldername>")
     exit(-1)
 
+t1 = "/run/media/bjoern/EOS_DIGITAL/DCIM/100EOS5D"
+t2 = "/home/bjoern/Bilder"
+
+if cfolder == t1 or lfolder == t2:
+    print("Warning: cfolder or lfolder have not been adjusted")
+    print("Warning: If you are not me, than you should do this.")
+    time.sleep(2)
+
 lfiles = []
 for filename in glob.iglob(f'{lfolder}/**/*', recursive=True):
     lfiles.append(os.path.basename(filename))
@@ -33,8 +43,8 @@ for filename in glob.iglob(f'{cfolder}/**/*', recursive=True):
     cfiles.append(os.path.basename(filename))
 
 if len(cfiles) == 0:
-    print("No files found on external device")
-    print("Maybe the device is not mounted")
+    print("Error: No files found on external device")
+    print("Error: Maybe the device is not mounted")
     exit(-2)
     
 nfiles=set(cfiles) - set(lfiles)
